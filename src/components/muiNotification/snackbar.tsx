@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ReactElement } from 'react'
 import Snackbar from '@mui/material/Snackbar'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
+import SignalWifiConnectedNoInternet4Icon from '@mui/icons-material/SignalWifiConnectedNoInternet4';
+import SignalWifiStatusbar4BarIcon from '@mui/icons-material/SignalWifiStatusbar4Bar';
 
 interface connexionMessage {
     message: string
     fire: boolean
+    img?: ReactElement
 }
 
 
@@ -16,20 +19,22 @@ function FireOfflineNotifications() {
         fire: false
     })
 
-    const { message, fire } = open
+    const { message, fire, img } = open
 
     useEffect(() => {
         const handleOnline = () => {
             setOpen({
                 message: 'Connection extablished!',
-                fire: true
+                fire: true,
+                img: <SignalWifiStatusbar4BarIcon style={{ color: 'white' }} />
             })
 
         }
         const handleOffline = () => {
             setOpen({
                 message: 'Connection failed!',
-                fire: true
+                fire: true,
+                img: <SignalWifiConnectedNoInternet4Icon style={{ color: 'white' }} />
             })
 
         }
@@ -56,15 +61,12 @@ function FireOfflineNotifications() {
             autoHideDuration={6000}
             onClose={handleClose}
             message={message}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             action={
                 <>
                     <IconButton
-                        aria-label="close"
-                        color="inherit"
-                        sx={{ p: 0.5 }}
-                        onClick={handleClose}
                     >
-                        <CloseIcon />
+                        {img}
                     </IconButton>
                 </>
             }
